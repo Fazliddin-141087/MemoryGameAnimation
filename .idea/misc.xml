@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ANDROID BASIC/Lesson 7/MemoryGame/app/src/main/res/drawable/ic_question.xml" value="0.37864583333333335" />
         <entry key="..\:/ANDROID BASIC/Lesson 7/MemoryGame/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
+        <entry key="..\:/ANDROID BASIC/Lesson 7/MemoryGame/app/src/main/res/layout/activity_splash.xml" value="0.3625" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -1,18 +1,23 @@
 package uz.pdp.memorygame
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
+
+import uz.pdp.memorygame.databinding.ActivityMainBinding
 import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding:ActivityMainBinding
     val listOpenClose = arrayOf(
         false,
         false,
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         false,
         false
     )
-
+    var isBack=false
     var imageIndex = arrayOfNulls<Int>(2)
     var imageId = arrayOfNulls<Int>(2)
     var openImage = 0
@@ -35,61 +40,67 @@ class MainActivity : AppCompatActivity() {
     var timer: CountDownTimer? = null
     var count = 0
     var timeNull = false
+    lateinit var handler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding= ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        image_1.setOnClickListener {
-            imageClick(image_1, R.drawable.ic_banana, 0)
+        binding.image1.setOnClickListener {
+            imageClick(binding.image1, R.drawable.ic_banana, 0)
         }
-        image_2.setOnClickListener {
-            imageClick(image_2, R.drawable.ic_strawberry, 1)
+        binding.image2.setOnClickListener {
+            imageClick(binding.image2, R.drawable.ic_strawberry, 1)
         }
-        image_3.setOnClickListener {
-            imageClick(image_3, R.drawable.ic_grapes, 2)
+        binding.image3.setOnClickListener {
+            imageClick(binding.image3, R.drawable.ic_grapes, 2)
         }
-        image_4.setOnClickListener {
-            imageClick(image_4, R.drawable.ic_lemon, 3)
+        binding.image4.setOnClickListener {
+            imageClick(binding.image4, R.drawable.ic_lemon, 3)
         }
-        image_5.setOnClickListener {
-            imageClick(image_5, R.drawable.ic_papaya, 4)
+        binding.image5.setOnClickListener {
+            imageClick(binding.image5, R.drawable.ic_papaya, 4)
         }
-        image_6.setOnClickListener {
-            imageClick(image_6, R.drawable.ic_watermelon, 5)
+        binding.image6.setOnClickListener {
+            imageClick(binding.image6, R.drawable.ic_watermelon, 5)
         }
-        image_7.setOnClickListener {
-            imageClick(image_7, R.drawable.ic_banana, 6)
+        binding.image7.setOnClickListener {
+            imageClick(binding.image7, R.drawable.ic_banana, 6)
         }
-        image_8.setOnClickListener {
-            imageClick(image_8, R.drawable.ic_strawberry, 7)
+        binding.image8.setOnClickListener {
+            imageClick(binding.image8, R.drawable.ic_strawberry, 7)
         }
-        image_9.setOnClickListener {
-            imageClick(image_9, R.drawable.ic_grapes, 8)
+        binding.image9.setOnClickListener {
+            imageClick(binding.image9, R.drawable.ic_grapes, 8)
         }
-        image_10.setOnClickListener {
-            imageClick(image_10, R.drawable.ic_lemon, 9)
+        binding.image10.setOnClickListener {
+            imageClick(binding.image10, R.drawable.ic_lemon, 9)
         }
-        image_11.setOnClickListener {
-            imageClick(image_11, R.drawable.ic_papaya, 10)
+        binding.image11.setOnClickListener {
+            imageClick(binding.image11, R.drawable.ic_papaya, 10)
         }
-        image_12.setOnClickListener {
-            imageClick(image_12, R.drawable.ic_watermelon, 11)
+        binding.image12.setOnClickListener {
+            imageClick(binding.image12, R.drawable.ic_watermelon, 11)
         }
 
-        timer = object : CountDownTimer(12000, 1000) {
+        timer = object : CountDownTimer(15000, 1000) {
+            @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 var number = DecimalFormat("00")
                 var min = (millisUntilFinished / 60000) % 60
                 var sek = (millisUntilFinished / 1000) % 60
-                txt_time.setText("${number.format(min)}:${number.format(sek)}")
+                binding.txtTime.text = "${number.format(min)}:${number.format(sek)}"
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onFinish() {
-                txt_time.setText("00:00")
+                binding.txtTime.text = "00:00"
                 timeNull = true
             }
         }.start()
+
+
 
     }
 
@@ -141,7 +152,8 @@ class MainActivity : AppCompatActivity() {
                                 imageIdentify(imageIndex[1]).visibility = View.INVISIBLE
                                 openImage--
                                 count += 1
-                                count_txt.setText("${count}")
+                                binding.countTxt.text = "${count}"
+                                counters(count)
                             } else {
                                 animationClose(imageIdentify(imageIndex[0]), -1, imageIndex[0])
                                 animationClose(imageIdentify(imageIndex[1]), -1, imageIndex[1])
@@ -159,9 +171,7 @@ class MainActivity : AppCompatActivity() {
             override fun onAnimationRepeat(animation: Animation?) {
 
             }
-
         })
-
     }
 
 
@@ -205,22 +215,51 @@ class MainActivity : AppCompatActivity() {
         openImage--
     }
 
+    fun counters(i:Int){
+        if (i==6){
+           binding.finishTv.visibility=View.VISIBLE
+        }
+    }
+
     fun imageIdentify(index: Int?): ImageView {
         var imageView: ImageView? = null
         when (index) {
-            0 -> imageView = image_1
-            1 -> imageView = image_2
-            2 -> imageView = image_3
-            3 -> imageView = image_4
-            4 -> imageView = image_5
-            5 -> imageView = image_6
-            6 -> imageView = image_7
-            7 -> imageView = image_8
-            8 -> imageView = image_9
-            9 -> imageView = image_10
-            10 -> imageView = image_11
-            11 -> imageView = image_12
+            0 -> imageView = binding.image1
+            1 -> imageView = binding.image2
+            2 -> imageView = binding.image3
+            3 -> imageView = binding.image4
+            4 -> imageView = binding.image5
+            5 -> imageView = binding.image6
+            6 -> imageView = binding.image7
+            7 -> imageView = binding.image8
+            8 -> imageView = binding.image9
+            9 -> imageView = binding.image10
+            10 -> imageView = binding.image11
+            11 -> imageView = binding.image12
         }
         return imageView!!
+    }
+
+    override fun onBackPressed() {
+        if (isBack){
+            super.onBackPressed()
+            return
+        }
+        isBack=true
+        handler= Handler(Looper.getMainLooper())
+        Toast.makeText(this, "Please again click", Toast.LENGTH_SHORT).show()
+        handler.postDelayed({
+            isBack=false
+        },2000)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isBack=false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isBack=false
     }
 }
